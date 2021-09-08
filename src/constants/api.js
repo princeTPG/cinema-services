@@ -18,6 +18,12 @@ export const theaterApi = {
   GET_THEATER_BY_ID: '/:id',
 };
 
+export const MOVIE_API_NAME_SPACE = `${NAME_SPACE}/movie`;
+export const movieApi = {
+  ADD: '/add',
+  GET_MOVIE_BY_ID: '/:id',
+};
+
 export default {
   statusApi,
   theaterApi,

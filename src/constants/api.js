@@ -34,7 +34,17 @@ export const movieScreeningApi = {
   GET_MOVIES_SCREENING_BY_THEATER_ID: '/theater/:id',
 };
 
+export const TICKET_SALE_NAME_SPACE = `${NAME_SPACE}/ticket`;
+export const ticketSaleApi = {
+  ADD: '/add',
+  GET_TICKET_BY_ID: '/:id',
+};
+
 export default {
+  movieApi,
+  movieScreeningApi,
   statusApi,
   theaterApi,
+  theaterScreensApi,
+  ticketSaleApi,
 };

@@ -4,3 +4,8 @@ dist/
 .vscode
 .env.prod
 logs/
+
+jspm_packages
+
+# Serverless directories
+.serverless

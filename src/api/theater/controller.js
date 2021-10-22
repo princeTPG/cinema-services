@@ -1,7 +1,10 @@
 import objectGet from 'lodash/get';
 import isNan from 'lodash/isNaN';
 
-import { errors as errorStrings, theater as theaterStrings } from '../../locales';
+import {
+  errors as errorStrings,
+  theater as theaterStrings,
+} from '../../locales';
 import { theater as theaterConstants } from '../../constants';
 
 import theaterModel from './model';
@@ -10,8 +13,7 @@ import { errorHandler, successHandler } from '../../utils/responseHandlers';
 export const addTheater = async (req, res) => {
   try {
     const name = objectGet(req, 'body.name');
-    const location = objectGet(req, 'body.location', {});
-
+    const location = objectGet(req, 'body.location');
     if (!name || !location) {
       const data = { message: errorStrings.errorMsgValidValues };
       return errorHandler(res, data);
@@ -39,8 +41,14 @@ export const getTheaterById = async (req, res) => {
 
 export const getAllTheaters = async (req, res) => {
   try {
-    const skip = parseInt(objectGet(req, 'query.skip', theaterConstants.skip), 10);
-    const limit = parseInt(objectGet(req, 'query.limit', theaterConstants.limit), 10);
+    const skip = parseInt(
+      objectGet(req, 'query.skip', theaterConstants.skip),
+      10,
+    );
+    const limit = parseInt(
+      objectGet(req, 'query.limit', theaterConstants.limit),
+      10,
+    );
     const searchParams = {};
 
     if (isNan(skip) || isNan(limit)) {

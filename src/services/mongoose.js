@@ -3,24 +3,31 @@ import mongoose from 'mongoose';
 import { MONGO_URI, ENV, EnvironmentsEnum } from '../constants/environments';
 import logger from '../utils/logger';
 
-mongoose.Promise = Promise;
+export const mongooseConnect = (mongoUri = MONGO_URI, cb) => {
+  // mongoose.Promise = Promise;
+  mongoose.Promise = global.Promise;
 
-mongoose.connection.on('connected', () => {
-  logger.info(`MongoDB is connected to :-  ${MONGO_URI}`);
-});
+  mongoose.connection.on('connected', () => {
+    logger.info(`MongoDB is connected to :-  ${mongoUri}`);
+    if (cb) {
+      cb();
+    }
+  });
 
-mongoose.connection.on('error', (err) => {
-  logger.info(`Could not connect to MongoDB because of ${err}`);
-  process.exit(1);
-});
+  mongoose.connection.on('error', (err) => {
+    logger.info(`Could not connect to MongoDB because of ${err}`);
+    if (cb) {
+      cb(err);
+    }
+    process.exit(1);
+  });
 
-if (ENV === EnvironmentsEnum.DEV) {
-  /** uncomment this to see logs for each mongo operation performed */
-  mongoose.set('debug', true);
-}
+  if (ENV === EnvironmentsEnum.DEV) {
+    /** uncomment this to see logs for each mongo operation performed */
+    mongoose.set('debug', true);
+  }
 
-export const mongooseConnect = () => {
-  mongoose.connect(MONGO_URI, {
+  mongoose.connect(mongoUri, {
     keepAlive: 1,
     useCreateIndex: true,
     useNewUrlParser: true,
@@ -28,6 +35,10 @@ export const mongooseConnect = () => {
   });
 
   return mongoose.connection;
+};
+
+export const mongooseDisconnect = () => {
+  mongoose.disconnect();
 };
 
 export default mongooseConnect;
